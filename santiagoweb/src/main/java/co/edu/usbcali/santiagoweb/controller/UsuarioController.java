@@ -11,7 +11,7 @@ import co.edu.usbcali.santiagoweb.repository.UsuarioRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("*/usuarios")
+@RequestMapping("usuarios")
 public class UsuarioController {
 
     @Autowired
