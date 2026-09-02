@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table (name="actividad_historial")
 public class ActividadHistorial {
 
     @Id

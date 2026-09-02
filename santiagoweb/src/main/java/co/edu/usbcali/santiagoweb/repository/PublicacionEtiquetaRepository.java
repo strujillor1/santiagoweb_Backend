@@ -1,4 +1,4 @@
-package repository;
+package co.edu.usbcali.santiagoweb.repository;
 
 import co.edu.usbcali.santiagoweb.domain.Publicacion;
 import org.springframework.data.jpa.repository.JpaRepository;
