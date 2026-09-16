@@ -1,13 +1,12 @@
 package co.edu.usbcali.santiagoweb.controller;
 
-import co.edu.usbcali.santiagoweb.domain.Etiqueta;
-import co.edu.usbcali.santiagoweb.repository.EtiquetaRepository;
+import co.edu.usbcali.santiagoweb.dto.request.CrearEtiquetaRequest;
+import co.edu.usbcali.santiagoweb.dto.response.ObtenerEtiquetaResponse;
+import co.edu.usbcali.santiagoweb.service.EtiquetaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -17,7 +16,7 @@ import java.util.List;
 public class EtiquetaController {
 
     @Autowired
-    private EtiquetaRepository etiquetaRepository;
+    private EtiquetaService etiquetaService;
 
     @GetMapping("/ping")
     String pingpong() {
@@ -31,14 +30,19 @@ public class EtiquetaController {
 
 
     @GetMapping("/obtener-etiquetas")
-    List<Etiqueta> obtenerEtiquetas() {
-        return etiquetaRepository.findAll();
+    List<ObtenerEtiquetaResponse> obtenerEtiquetas() {
+        return etiquetaService.obtenerEtiquetas();
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Etiqueta> obtenerEtiquetaPorId(@PathVariable Integer id){
-        Etiqueta etiqueta = etiquetaRepository.findById(id).orElse(null);
-        return ResponseEntity.ok(etiqueta);
+    ResponseEntity<ObtenerEtiquetaResponse> obtenerEtiquetaPorId(@PathVariable Integer id) throws Exception {
+        return ResponseEntity.ok(etiquetaService.obtenerEtiquetaPorId(id));
+    }
 
+    @PostMapping("/crear")
+    ResponseEntity<ObtenerEtiquetaResponse> crearEtiqueta(@RequestBody CrearEtiquetaRequest etiquetaRequest) throws Exception{
+        ObtenerEtiquetaResponse etiquetaResponse =
+                etiquetaService.crearEtiqueta(etiquetaRequest);
+        return new ResponseEntity<>(etiquetaResponse, HttpStatus.CREATED);
     }
 }
