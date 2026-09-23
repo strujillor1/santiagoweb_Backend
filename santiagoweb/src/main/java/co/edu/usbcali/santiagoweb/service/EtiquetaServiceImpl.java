@@ -62,7 +62,7 @@ public class EtiquetaServiceImpl implements EtiquetaService {
             throw new Exception("El nombre de la etiqueta no puede estar vacio ni ser nulo");
         }
 
-        Boolean existeEtiquetaPorNombre = etiquetaRepository.existByNombre(crearEtiqueta.nombre());
+        Boolean existeEtiquetaPorNombre = etiquetaRepository.existsByNombre(crearEtiqueta.nombre());
         if (existeEtiquetaPorNombre){
             throw new Exception("El nombre de la etiquer¿ta ya existe");
         }
