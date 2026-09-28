@@ -29,10 +29,10 @@ public class PublicacionMapper {
         return publicaciones.stream().map(PublicacionMapper::publicacionAObtenerPublicacionResponse).toList();
     }
 
-    public Publicacion crearPublicacionRequestAPublicacion(CrearPublicacionRequest publicacionRq) {
+    public static Publicacion crearPublicacionRequestAPublicacion(CrearPublicacionRequest publicacionRq) {
         Publicacion publicacion = Publicacion.builder()
                 .contenido(publicacionRq.contenido())
-                .privacidad(PrivacidadPublicacion.valueOf(publicacionRq.privacidadPublicacion()))
+                .privacidad(PrivacidadPublicacion.getPrivacidadPublicacion(publicacionRq.privacidadPublicacion()))
                 .build();
         return publicacion;
     }
