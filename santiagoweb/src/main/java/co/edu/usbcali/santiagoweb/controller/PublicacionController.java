@@ -1,6 +1,5 @@
 package co.edu.usbcali.santiagoweb.controller;
 
-
 import co.edu.usbcali.santiagoweb.dto.request.CrearPublicacionRequest;
 import co.edu.usbcali.santiagoweb.dto.response.ObtenerPublicacionResponse;
 import co.edu.usbcali.santiagoweb.service.PublicacionService;
