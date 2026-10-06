@@ -1,15 +1,13 @@
 package co.edu.usbcali.santiagoweb.controller;
 
-import co.edu.usbcali.santiagoweb.domain.Denuncia;
-import co.edu.usbcali.santiagoweb.domain.enums.EstadoDenuncia;
+import co.edu.usbcali.santiagoweb.dto.request.CrearDenunciaRequest;
 import co.edu.usbcali.santiagoweb.dto.response.ObtenerDenunciaResponse;
 import co.edu.usbcali.santiagoweb.repository.DenunciaRepository;
+import co.edu.usbcali.santiagoweb.service.DenunciaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,37 +17,23 @@ public class DenunciaController {
 
     @Autowired
     private DenunciaRepository denunciaRepository;
+    @Autowired
+    private DenunciaService denunciaService;
 
-    @GetMapping("/ping")
-    String pingpong() {
-        return "pong";
-    }
-
-    @GetMapping("/validar-stado")
-    String validarEstado() {
-        return "ok";
-    }
-
-
-    @GetMapping("/obtener-denuncia")
-    List<Denuncia> obtenerDenuncias() {
-        return denunciaRepository.findAll();
+    @GetMapping
+    public List<ObtenerDenunciaResponse> obtenerDenuncias() {
+        return denunciaService.obtenerDenuncias();
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<ObtenerDenunciaResponse> obtenerDenunciaPorId(@PathVariable Integer id) {
-        Denuncia denuncia = denunciaRepository.findById(id).orElse(null);
-
-        if (denuncia == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(co.edu.usbcali.santiagoweb.mapper.DenunciaMapper.denunciaObtenerDenunciaResponse(denuncia));
+    public ResponseEntity<ObtenerDenunciaResponse> obtenerDenunciaPorId(@PathVariable Integer id) throws Exception {
+        return ResponseEntity.ok(denunciaService.obtenerDenunciaPorId(id));
     }
 
-    @GetMapping("/estado/{estado}")
-    List<ObtenerDenunciaResponse> obtenerDenunciasPorEstado(@PathVariable EstadoDenuncia estado) {
-        List<Denuncia> denuncias = denunciaRepository.findByEstado(estado);
-        return co.edu.usbcali.santiagoweb.mapper.DenunciaMapper.listaDenunciaHaciaListaObtenerDenunciaResponse(denuncias);
+    @PostMapping("/crear")
+    public ResponseEntity<ObtenerDenunciaResponse> crearDenuncia(@RequestBody CrearDenunciaRequest request) throws Exception {
+        ObtenerDenunciaResponse response =
+                denunciaService.crearDenuncia(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }

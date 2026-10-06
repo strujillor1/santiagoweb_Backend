@@ -22,31 +22,26 @@ public class EtiquetaServiceImpl implements EtiquetaService {
     @Override
     public List<ObtenerEtiquetaResponse> obtenerEtiquetas() {
         List<Etiqueta> todaslasEtiquetas = etiquetaRepository.findAll();
-        List<ObtenerEtiquetaResponse> etiquetasResponses =
-                EtiquetaMapper.listaEtiquetaHaciaListaObtenerEtiquetaResponse(todaslasEtiquetas);
-        return etiquetasResponses;
-
-        //return EtiquetaMapper.listaEtiquetaHaciaListaObtenerEtiquetaResponse(todaslasEtiquetas);
+        return EtiquetaMapper.listaEtiquetaHaciaListaObtenerEtiquetaResponse(todaslasEtiquetas);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ObtenerEtiquetaResponse obtenerEtiquetaPorId(Integer id) throws Exception {
-        //Validar que id no sea nulo, ni vacio ni sea valor inferior a cero
 
         if(id == null){
             throw new Exception("El id no puede ser nulo");
         }
-        if (id <=0){
+        if (id <= 0){
             throw new Exception("El valor del id no puede ser inferior o igual a cero");
         }
+
         Optional<Etiqueta> etiquetaOptional = etiquetaRepository.findById(id);
         if (etiquetaOptional.isEmpty()){
-            throw new Exception("No se ha encontrado la Etiqueta con el id: "+id);
+            throw new Exception("No se ha encontrado la Etiqueta con el id: " + id);
         }
-        ObtenerEtiquetaResponse etiquetaResponse =
-                EtiquetaMapper.etiquetaObtenerEtiquetaResponse(etiquetaOptional.get());
-        return etiquetaResponse;
+
+        return EtiquetaMapper.etiquetaObtenerEtiquetaResponse(etiquetaOptional.get());
     }
 
     @Override
@@ -55,7 +50,6 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 
         if (crearEtiqueta == null){
             throw new Exception("El objeto a crear no puede ser nulo");
-
         }
 
         if (crearEtiqueta.nombre() == null || crearEtiqueta.nombre().isBlank()){
@@ -64,15 +58,15 @@ public class EtiquetaServiceImpl implements EtiquetaService {
 
         Boolean existeEtiquetaPorNombre = etiquetaRepository.existsByNombre(crearEtiqueta.nombre());
         if (existeEtiquetaPorNombre){
-            throw new Exception("El nombre de la etiquer¿ta ya existe");
+            throw new Exception("El nombre de la etiqueta ya existe");
         }
-
 
         Etiqueta etiqueta = EtiquetaMapper.crearEtiquetaRequestAEtiqueta(crearEtiqueta);
 
         etiqueta = etiquetaRepository.save(etiqueta);
 
-        ObtenerEtiquetaResponse etiquetaResponse = EtiquetaMapper. etiquetaObtenerEtiquetaResponse(etiqueta);
+        ObtenerEtiquetaResponse etiquetaResponse = EtiquetaMapper.etiquetaObtenerEtiquetaResponse(etiqueta);
+
 
         return etiquetaResponse;
     }

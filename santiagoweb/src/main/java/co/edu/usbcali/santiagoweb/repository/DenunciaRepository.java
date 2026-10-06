@@ -10,5 +10,4 @@ import java.util.List;
 @Repository
 public interface DenunciaRepository extends JpaRepository<Denuncia, Integer> {
 
-    List<Denuncia> findByEstado(EstadoDenuncia estado);
 }

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.LocalDateTime;
 
@@ -41,6 +42,7 @@ public class Denuncia {
     private String motivo;
 
     @Column(name = "estado", nullable = false)
+    @ColumnTransformer(write = "?::estado_denuncia")
     private EstadoDenuncia estado;
 
     @Column(name = "created_at", nullable = false)
@@ -48,6 +50,9 @@ public class Denuncia {
 
     @PrePersist
     public void prePersist() {
+        if (estado == null) {
+            estado = EstadoDenuncia.PENDIENTE;
+        }
         createdAt = LocalDateTime.now();
     }
 
