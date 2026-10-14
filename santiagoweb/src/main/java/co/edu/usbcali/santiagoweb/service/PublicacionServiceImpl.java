@@ -4,6 +4,7 @@ import co.edu.usbcali.santiagoweb.domain.Publicacion;
 import co.edu.usbcali.santiagoweb.domain.Usuario;
 import co.edu.usbcali.santiagoweb.domain.enums.PrivacidadPublicacion;
 import co.edu.usbcali.santiagoweb.dto.request.CrearPublicacionRequest;
+import co.edu.usbcali.santiagoweb.dto.request.ModificarPublicacionRequest;
 import co.edu.usbcali.santiagoweb.dto.response.ObtenerPublicacionResponse;
 import co.edu.usbcali.santiagoweb.mapper.PublicacionMapper;
 import co.edu.usbcali.santiagoweb.repository.PublicacionRepository;
@@ -98,6 +99,18 @@ public class PublicacionServiceImpl implements PublicacionService {
 
         return publicacionResponse;
     }
+    //Implementar la logica para modificar publicacion
+    @Override
+    public ObtenerPublicacionResponse modificarPublicacion(Integer id, ModificarPublicacionRequest modificarPublicacionRequest) throws Exception {
+        return null;
+    }
 
+    //Eliminar la publicacion
+    public void eliminarPublicacion(Integer id) throws Exception{
+
+
+    }
 
 }
+
+

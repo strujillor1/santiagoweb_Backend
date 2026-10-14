@@ -1,6 +1,7 @@
 package co.edu.usbcali.santiagoweb.controller;
 
 import co.edu.usbcali.santiagoweb.dto.request.CrearPublicacionRequest;
+import co.edu.usbcali.santiagoweb.dto.request.ModificarPublicacionRequest;
 import co.edu.usbcali.santiagoweb.dto.response.ObtenerPublicacionResponse;
 import co.edu.usbcali.santiagoweb.service.PublicacionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +35,13 @@ public class PublicacionController {
                 publicacionService.crearPublicacion(publicacionRequest);
         return new ResponseEntity<>(publicacionResponse, HttpStatus.CREATED);
     }
+
+    @PutMapping("/modificar/{id}")
+    ResponseEntity<ObtenerPublicacionResponse> modificarPublicacion(
+            @PathVariable Integer id,
+            @RequestBody ModificarPublicacionRequest modificarPublicacionRequest) throws Exception{
+        return ResponseEntity.ok
+                (publicacionService.modificarPublicacion(id, modificarPublicacionRequest));
+    }
+
 }
