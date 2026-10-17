@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -101,13 +102,85 @@ public class PublicacionServiceImpl implements PublicacionService {
     }
     //Implementar la logica para modificar publicacion
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ObtenerPublicacionResponse modificarPublicacion(Integer id, ModificarPublicacionRequest modificarPublicacionRequest) throws Exception {
-        return null;
+
+        if (id == null) {
+            throw new Exception("El id no puede ser nulo");
+        }
+
+        if (id <= 0) {
+            throw new Exception("El valor del id no puede ser inferior o igual a cero para modificar");
+        }
+
+        if (modificarPublicacionRequest == null) {
+            throw new Exception("El objeto a modificar no puede ser nulo");
+        }
+
+        boolean hayContenido = modificarPublicacionRequest.contenido() != null
+                && !modificarPublicacionRequest.contenido().isBlank();
+        boolean hayPrivacidad = modificarPublicacionRequest.privacidadPublicacion() != null
+                && !modificarPublicacionRequest.privacidadPublicacion().isBlank();
+
+        if (!hayContenido && !hayPrivacidad) {
+            throw new Exception("Debe enviar al menos el contenido o la privacidad de la publicación para modificar");
+        }
+
+        Publicacion publicacion = publicacionRepository
+                .findById(id)
+                .orElseThrow(() -> new Exception("No existe la publicación con el id: " + id + "."));
+
+        // Borrado lógico: no se permite modificar una publicación eliminada
+        if (publicacion.getDeletedAt() != null) {
+            throw new Exception("No se puede modificar una publicación eliminada");
+        }
+
+        if (hayContenido) {
+            publicacion.setContenido(modificarPublicacionRequest.contenido());
+        }
+
+        if (hayPrivacidad) {
+            PrivacidadPublicacion privacidad = PrivacidadPublicacion
+                    .getPrivacidadPublicacion(modificarPublicacionRequest.privacidadPublicacion());
+
+            if (privacidad == null) {
+                throw new Exception("No se ha encontrado la privacidad-publicacion: "
+                        + modificarPublicacionRequest.privacidadPublicacion() + ".");
+            }
+
+            publicacion.setPrivacidad(privacidad);
+        }
+
+        // updatedAt se actualiza solo gracias al @PreUpdate de la entidad
+        publicacion = publicacionRepository.save(publicacion);
+
+        return PublicacionMapper.publicacionAObtenerPublicacionResponse(publicacion);
     }
 
-    //Eliminar la publicacion
-    public void eliminarPublicacion(Integer id) throws Exception{
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+    public void eliminarPublicacion(Integer id) throws Exception {
 
+        if (id == null) {
+            throw new Exception("El id no puede ser nulo");
+        }
+
+        if (id <= 0) {
+            throw new Exception("El valor del id no puede ser inferior o igual a cero para eliminar");
+        }
+
+        Publicacion publicacion = publicacionRepository
+                .findById(id)
+                .orElseThrow(() -> new Exception("No existe la publicación con el id: " + id + "."));
+
+        if (publicacion.getDeletedAt() != null) {
+            throw new Exception("La publicación ya se encuentra eliminada");
+        }
+
+        // Borrado lógico
+        publicacion.setDeletedAt(LocalDateTime.now());
+
+        publicacionRepository.save(publicacion);
 
     }
 

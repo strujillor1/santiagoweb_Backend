@@ -44,4 +44,10 @@ public class PublicacionController {
                 (publicacionService.modificarPublicacion(id, modificarPublicacionRequest));
     }
 
+    @DeleteMapping("/eliminar/{id}")
+    ResponseEntity<Void> eliminarPublicacion(@PathVariable Integer id) throws Exception {
+        publicacionService.eliminarPublicacion(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
