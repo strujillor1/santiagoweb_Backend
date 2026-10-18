@@ -11,7 +11,8 @@ public record ObtenerPublicacionResponse (
         String contenido,
         @JsonProperty("privacidad_publicacion") String privacidadPublicacion,
         @JsonProperty("created_at") LocalDateTime createdAt,
-        @JsonProperty("updated_at") LocalDateTime updatedAt
+        @JsonProperty("updated_at") LocalDateTime updatedAt,
+        @JsonProperty("deleted_at") LocalDateTime deletedAt
 ) {
 
 }
