@@ -20,7 +20,8 @@ public class PublicacionMapper {
                 publicacion.getPrivacidad().toString(),
                 publicacion.getCreatedAt(),
                 publicacion.getUpdatedAt(),
-                publicacion.getDeletedAt()
+                publicacion.getDeletedAt(),
+                publicacion.getDeletedAt()!=null
         );
         // Retorno del Response
         return publicacionResponse;

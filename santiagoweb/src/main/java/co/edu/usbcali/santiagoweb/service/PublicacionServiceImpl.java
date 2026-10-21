@@ -122,8 +122,13 @@ public class PublicacionServiceImpl implements PublicacionService {
         boolean hayPrivacidad = modificarPublicacionRequest.privacidadPublicacion() != null
                 && !modificarPublicacionRequest.privacidadPublicacion().isBlank();
 
-        if (!hayContenido && !hayPrivacidad) {
-            throw new Exception("Debe enviar al menos el contenido o la privacidad de la publicación para modificar");
+        // 1. Validaciones separadas con mensajes precisos
+        if (!hayContenido) {
+            throw new IllegalArgumentException("El contenido de la publicación es obligatorio.");
+        }
+
+        if (!hayPrivacidad) {
+            throw new IllegalArgumentException("La privacidad de la publicación es obligatoria.");
         }
 
         Publicacion publicacion = publicacionRepository
@@ -135,21 +140,18 @@ public class PublicacionServiceImpl implements PublicacionService {
             throw new Exception("No se puede modificar una publicación eliminada");
         }
 
-        if (hayContenido) {
-            publicacion.setContenido(modificarPublicacionRequest.contenido());
+        // 2. Se eliminan los "if (hayContenido)" porque ya es seguro que vienen
+        publicacion.setContenido(modificarPublicacionRequest.contenido());
+
+        PrivacidadPublicacion privacidad = PrivacidadPublicacion
+                .getPrivacidadPublicacion(modificarPublicacionRequest.privacidadPublicacion());
+
+        if (privacidad == null) {
+            throw new IllegalArgumentException("No se ha encontrado la privacidad-publicacion: "
+                    + modificarPublicacionRequest.privacidadPublicacion() + ".");
         }
 
-        if (hayPrivacidad) {
-            PrivacidadPublicacion privacidad = PrivacidadPublicacion
-                    .getPrivacidadPublicacion(modificarPublicacionRequest.privacidadPublicacion());
-
-            if (privacidad == null) {
-                throw new Exception("No se ha encontrado la privacidad-publicacion: "
-                        + modificarPublicacionRequest.privacidadPublicacion() + ".");
-            }
-
-            publicacion.setPrivacidad(privacidad);
-        }
+        publicacion.setPrivacidad(privacidad);
 
         // updatedAt se actualiza solo gracias al @PreUpdate de la entidad
         publicacion = publicacionRepository.save(publicacion);
@@ -181,6 +183,9 @@ public class PublicacionServiceImpl implements PublicacionService {
         publicacion.setDeletedAt(LocalDateTime.now());
 
         publicacionRepository.save(publicacion);
+
+        // Borrado fisico
+        //publicacionRepository.delete(publicacion);
 
     }
 
