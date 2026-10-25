@@ -50,4 +50,14 @@ public class PublicacionController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/vigentes")
+    ResponseEntity<List<ObtenerPublicacionResponse>> obtenerPublicacionesVigentes() {
+        return ResponseEntity.ok(publicacionService.obtenerPublicacionesVigentes());
+    }
+
+    @GetMapping("/eliminadas")
+    ResponseEntity<List<ObtenerPublicacionResponse>> obtenerPublicacionesEliminadas() {
+        return ResponseEntity.ok(publicacionService.obtenerPublicacionesEliminadas());
+    }
+
 }

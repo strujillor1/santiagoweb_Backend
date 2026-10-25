@@ -21,4 +21,10 @@ public interface PublicacionService {
     ObtenerPublicacionResponse modificarPublicacion(Integer id, ModificarPublicacionRequest modificarPublicacionRequest) throws Exception;
 
     void eliminarPublicacion(Integer id) throws Exception;
+
+    // Publicaciones vigentes (deletedAt es null)
+    List<ObtenerPublicacionResponse> obtenerPublicacionesVigentes();
+
+    // Publicaciones eliminadas lógicamente (deletedAt tiene fecha)
+    List<ObtenerPublicacionResponse> obtenerPublicacionesEliminadas();
 }

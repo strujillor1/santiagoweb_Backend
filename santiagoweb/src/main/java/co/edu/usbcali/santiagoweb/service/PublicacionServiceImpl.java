@@ -55,6 +55,24 @@ public class PublicacionServiceImpl implements PublicacionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<ObtenerPublicacionResponse> obtenerPublicacionesVigentes() {
+        return PublicacionMapper.
+                listaPublicacionesHaciaListaObtenerPublicacionesResponse(
+                        publicacionRepository.findByDeletedAtIsNull()
+                );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ObtenerPublicacionResponse> obtenerPublicacionesEliminadas() {
+        return PublicacionMapper.
+                listaPublicacionesHaciaListaObtenerPublicacionesResponse(
+                        publicacionRepository.findByDeletedAtIsNotNull()
+                );
+    }
+
+    @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ObtenerPublicacionResponse crearPublicacion(CrearPublicacionRequest crearPublicacionRequest) throws Exception {
 
