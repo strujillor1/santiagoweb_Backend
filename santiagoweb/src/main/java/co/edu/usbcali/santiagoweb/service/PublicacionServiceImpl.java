@@ -9,6 +9,7 @@ import co.edu.usbcali.santiagoweb.dto.response.ObtenerPublicacionResponse;
 import co.edu.usbcali.santiagoweb.mapper.PublicacionMapper;
 import co.edu.usbcali.santiagoweb.repository.PublicacionRepository;
 import co.edu.usbcali.santiagoweb.repository.UsuarioRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class PublicacionServiceImpl implements PublicacionService {
 
     @Autowired
@@ -40,6 +42,8 @@ public class PublicacionServiceImpl implements PublicacionService {
     @Override
     @Transactional(readOnly = true)
     public ObtenerPublicacionResponse obtenerPublicacionPorId(Integer id) throws Exception {
+        log.info("Se ha invocado el metodo obtener publicacionPorId con argumento:"+id);
+
         if (id == null) {
             throw new Exception("El id no puede ser nulo");
         }
@@ -75,6 +79,9 @@ public class PublicacionServiceImpl implements PublicacionService {
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     public ObtenerPublicacionResponse crearPublicacion(CrearPublicacionRequest crearPublicacionRequest) throws Exception {
+
+        log.info("Se ha invocado metofo crearPublicacion con objeto crearPublicacionRequest: " +
+                crearPublicacionRequest.toString());
 
 
         if (crearPublicacionRequest == null){
