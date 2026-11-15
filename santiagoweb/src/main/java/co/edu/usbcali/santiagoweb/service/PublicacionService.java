@@ -27,4 +27,10 @@ public interface PublicacionService {
 
     // Publicaciones eliminadas lógicamente (deletedAt tiene fecha)
     List<ObtenerPublicacionResponse> obtenerPublicacionesEliminadas();
+
+    //Método para eliminar fisicamente
+    void eliminarPublicacionFisicamente(Integer id) throws Exception;
+
+    // Método recuperar publicacion
+    ObtenerPublicacionResponse recuperarPublicacionPorId(Integer id) throws Exception;
 }

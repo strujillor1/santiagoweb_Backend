@@ -50,6 +50,20 @@ public class PublicacionController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/eliminar/{id}/fisico")
+    public ResponseEntity<Void> eliminarPublicacionFisicamente(@PathVariable Integer id) throws Exception {
+        publicacionService.eliminarPublicacionFisicamente(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/recuperar/{id}")
+    public ResponseEntity<ObtenerPublicacionResponse> recuperarPublicacionPorId(
+            @PathVariable Integer id) throws Exception {
+
+        ObtenerPublicacionResponse publicacionRecuperada = publicacionService.recuperarPublicacionPorId(id);
+        return ResponseEntity.ok(publicacionRecuperada);
+    }
+
     @GetMapping("/vigentes")
     ResponseEntity<List<ObtenerPublicacionResponse>> obtenerPublicacionesVigentes() {
         return ResponseEntity.ok(publicacionService.obtenerPublicacionesVigentes());
@@ -59,5 +73,7 @@ public class PublicacionController {
     ResponseEntity<List<ObtenerPublicacionResponse>> obtenerPublicacionesEliminadas() {
         return ResponseEntity.ok(publicacionService.obtenerPublicacionesEliminadas());
     }
+
+
 
 }

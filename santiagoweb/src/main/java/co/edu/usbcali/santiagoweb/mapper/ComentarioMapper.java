@@ -1,6 +1,7 @@
 package co.edu.usbcali.santiagoweb.mapper;
 
 import co.edu.usbcali.santiagoweb.domain.Comentario;
+import co.edu.usbcali.santiagoweb.dto.request.CrearComentarioRequest;
 import co.edu.usbcali.santiagoweb.dto.response.ObtenerComentarioResponse;
 
 import java.util.List;
@@ -18,4 +19,12 @@ public class ComentarioMapper {
     public static List<ObtenerComentarioResponse> listaComentarioHaciaListaObtenerComentarioResponse(List<Comentario> comentarios) {
         return comentarios.stream().map(ComentarioMapper::comentarioObtenerComentarioResponse).toList();
     }
+
+    public static Comentario crearComentarioRequestAComentario(CrearComentarioRequest crearComentarioRequest) {
+
+        return Comentario.builder()
+                .contenido(crearComentarioRequest.contenido())
+                .build();
+    }
+
 }
